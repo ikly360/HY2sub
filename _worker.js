@@ -147,7 +147,7 @@ async function getLocationInfo(ip) {
 		if (response.ok) {
 			let data = await response.json();
 			if (data.status === "success") {
-				return `${data.country} ${data.regionName} ${data.as}`;
+				return `${data.countryCode} ${data.regionName} ${data.as}`;
 			}
 		}
 	} catch (error) {
