@@ -136,7 +136,11 @@ export default {
 			const base64EncodedString = btoa(unescape(encodeURIComponent(combinedString)));
 
 			return new Response(base64EncodedString, {
-				headers: { 'content-type': 'text/plain; charset=utf-8' },
+				headers: { 
+					"content-type": "text/plain; charset=utf-8",
+					"Profile-Update-Interval": `${SUBUpdateTime}`,
+					"Subscription-Userinfo": `upload=${UD}; download=${UD}; total=${total}; expire=${expire}`,
+				},
 			});
 		}
 
@@ -157,7 +161,12 @@ export default {
 				//console.log(subconverterContent);
 
 				if (订阅格式 == 'clash'){
-					const WARP2subUrl = await fetch(`https://${WARP2sub}/${WARP2subToken}?warp2clash`);
+					const WARP2subUrl = await fetch(`https://${WARP2sub}/${WARP2subToken}?warp2clash`, {
+						headers: {
+							'Content-Type': 'text/html; charset=UTF-8',
+							'User-Agent': `${UA} cmliu/HY2sub`
+						},
+					});
 					if (WARP2subUrl.ok) {
 						const warpConfigText = await WARP2subUrl.text();
 						let warpConfig;
@@ -312,4 +321,3 @@ async function ADD(envadd) {
 	//console.log(add);
 	return add ;
 }
-
