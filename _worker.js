@@ -3,8 +3,14 @@
 
 let mytoken= ['auto'];//快速订阅访问入口, 留空则不启动快速订阅
 
-let subconverter = "apiurl.v1.mk"; //在线订阅转换后端，目前使用肥羊的订阅转换功能。支持自建psub 可自行搭建https://github.com/bulianglin/psub
+let subconverter = "url.v1.mk"; //在线订阅转换后端，目前使用肥羊的订阅转换功能。支持自建psub 可自行搭建https://github.com/bulianglin/psub
 let subconfig = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online_Mini_MultiMode.ini"; //订阅转换配置文件
+
+let FileName = 'HY2sub';
+let SUBUpdateTime = 6; //自定义订阅更新时间，单位小时
+let total = 99;//PB
+let timestamp = 4102329600000;//2099-12-31
+
 let WARP2sub = 'WARP.fxxk.dedyn.io';
 let WARP2subToken = 'auto';
 
@@ -15,6 +21,11 @@ export default {
 		subconfig = env.SUBCONFIG || subconfig;
 		WARP2sub = env.WARP2SUB || WARP2sub;
 		WARP2subToken = env.WARP2SUBTOKEN || WARP2subToken;
+		FileName = env.SUBNAME || FileName;
+		SUBUpdateTime = env.SUBUPTIME || SUBUpdateTime;
+		let UD = Math.floor(((timestamp - Date.now())/timestamp * 99 * 1099511627776 * 1024)/2);
+		total = total * 1099511627776 * 1024;
+		let expire= Math.floor(timestamp / 1000) ;
 		const UA = request.headers.get('User-Agent') || 'null';
 		const userAgent = UA.toLowerCase();
 		const url = new URL(request.url);
@@ -155,7 +166,7 @@ export default {
 						} else {
 							warpConfig = warpConfigText.split('\n\ncmliu/WARP2sub\n\n');
 						}
-						console.log(warpConfig);
+						//console.log(warpConfig);
 						const WARP前置节点ID = warpConfig[0];
 						const WARP节点ID = warpConfig[1];
 						const WARP节点配置 = warpConfig[2];
@@ -171,21 +182,21 @@ export default {
 						if (subconverterContent.indexOf("  - name: ♻️ 自动选择")) WARP前置分组 += `\n      - ♻️ 自动选择`;
 						if (subconverterContent.indexOf("  - name: 🔯 故障转移")) WARP前置分组 += `\n      - 🔯 故障转移`;
 						if (subconverterContent.indexOf("  - name: 🔮 负载均衡")) WARP前置分组 += `\n      - 🔮 负载均衡`;
-						console.log(WARP前置分组);
+						//console.log(WARP前置分组);
 						WARP前置分组 += `\n  - name: 🌐 WARP+\n    type: url-test\n    url: http://www.gstatic.com/generate_204\n    interval: 300\n    tolerance: 50\n    proxies:\n${WARP节点ID}`
 						
 						const 找分组列表 = subconverterContent.indexOf("proxy-groups:") + "proxy-groups:".length;
 						subconverterContent = subconverterContent.substring(0, 找分组列表) + "\n" + WARP前置分组 + subconverterContent.substring(找分组列表);
 						console.log(subconverterContent);
 
-						
-
 					}
 				}
-
 				return new Response(subconverterContent, {
 					headers: { 
+						"Content-Disposition": `attachment; filename*=utf-8''${encodeURIComponent(FileName)}; filename=${FileName}`,
 						"content-type": "text/plain; charset=utf-8",
+						"Profile-Update-Interval": `${SUBUpdateTime}`,
+						"Subscription-Userinfo": `upload=${UD}; download=${UD}; total=${total}; expire=${expire}`,
 					},
 				});
 			} catch (error) {
