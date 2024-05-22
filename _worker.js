@@ -71,7 +71,7 @@ export default {
 						method: 'get',
 						headers: {
 							'Accept': 'text/html,application/xhtml+xml,application/xml;',
-							'User-Agent': `cmliu/HY2sub`
+							'User-Agent': `${UA} cmliu/HY2sub`
 						},
 						signal: controller.signal // 将AbortController的信号量添加到fetch请求中，以便于需要时可以取消请求
 					}).then(response => {
