@@ -71,7 +71,7 @@ export default {
 						method: 'get',
 						headers: {
 							'Accept': 'text/html,application/xhtml+xml,application/xml;',
-							'User-Agent': `${UA} cmliu/HY2sub`
+							'User-Agent': `cmliu/HY2sub`
 						},
 						signal: controller.signal // 将AbortController的信号量添加到fetch请求中，以便于需要时可以取消请求
 					}).then(response => {
@@ -105,7 +105,7 @@ export default {
 				clearTimeout(timeout);
 			}
 
-			//console.log(link);
+			console.log(link);
 		}
 
 		let siteshy2 = [
@@ -248,15 +248,15 @@ export default {
 						subconverterContent = subconverterContent.substring(0, 找节点列表) + "\n" + WARP节点配置 + subconverterContent.substring(找节点列表);
 						//console.log(subconverterContent);
 
-						subconverterContent = subconverterContent.replace(new RegExp("			- ♻️ 自动选择", 'g'), "			- ♻️ 自动选择\n			- 🌐 WARP+")
+						subconverterContent = subconverterContent.replace(new RegExp("      - ♻️ 自动选择", 'g'), "      - ♻️ 自动选择\n      - 🌐 WARP+")
 
-						let WARP前置分组 = `	- name: ${WARP前置节点ID}\n		type: select\n		proxies:`;
-						if (subconverterContent.indexOf("	- name: 🚀 节点选择")) WARP前置分组 += `\n			- 🚀 节点选择`;
-						if (subconverterContent.indexOf("	- name: ♻️ 自动选择")) WARP前置分组 += `\n			- ♻️ 自动选择`;
-						if (subconverterContent.indexOf("	- name: 🔯 故障转移")) WARP前置分组 += `\n			- 🔯 故障转移`;
-						if (subconverterContent.indexOf("	- name: 🔮 负载均衡")) WARP前置分组 += `\n			- 🔮 负载均衡`;
+						let WARP前置分组 = `  - name: ${WARP前置节点ID}\n    type: select\n    proxies:`;
+						if (subconverterContent.indexOf("  - name: 🚀 节点选择")) WARP前置分组 += `\n      - 🚀 节点选择`;
+						if (subconverterContent.indexOf("  - name: ♻️ 自动选择")) WARP前置分组 += `\n      - ♻️ 自动选择`;
+						if (subconverterContent.indexOf("  - name: 🔯 故障转移")) WARP前置分组 += `\n      - 🔯 故障转移`;
+						if (subconverterContent.indexOf("  - name: 🔮 负载均衡")) WARP前置分组 += `\n      - 🔮 负载均衡`;
 						//console.log(WARP前置分组);
-						WARP前置分组 += `\n	- name: 🌐 WARP+\n		type: url-test\n		url: http://www.gstatic.com/generate_204\n		interval: 300\n		tolerance: 50\n		proxies:\n${WARP节点ID}`
+						WARP前置分组 += `\n  - name: 🌐 WARP+\n    type: url-test\n    url: http://www.gstatic.com/generate_204\n    interval: 300\n    tolerance: 50\n    proxies:\n${WARP节点ID}`
 						
 						const 找分组列表 = subconverterContent.indexOf("proxy-groups:") + "proxy-groups:".length;
 						subconverterContent = subconverterContent.substring(0, 找分组列表) + "\n" + WARP前置分组 + subconverterContent.substring(找分组列表);
