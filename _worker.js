@@ -71,7 +71,7 @@ export default {
 						method: 'get',
 						headers: {
 							'Accept': 'text/html,application/xhtml+xml,application/xml;',
-							'User-Agent': `${UA} cmliu/HY2sub`
+							'User-Agent': `${UA}`
 						},
 						signal: controller.signal // 将AbortController的信号量添加到fetch请求中，以便于需要时可以取消请求
 					}).then(response => {
@@ -80,6 +80,11 @@ export default {
 								// 这里可以顺便做内容检查
 								if (!content.includes('://')) {
 									content = base64Decode(content);
+								} else {
+									//content = decodeURIComponent(content);
+                  if (content.includes('\r')){
+                    content = content.replace(/\r/g, '');
+                  }
 								}
 								return content; // 保证链式调用中的下一个then可以接收到文本内容
 								//console.log(content);
