@@ -82,9 +82,9 @@ export default {
 									content = base64Decode(content);
 								} else {
 									//content = decodeURIComponent(content);
-                  if (content.includes('\r')){
-                    content = content.replace(/\r/g, '');
-                  }
+									if (content.includes('\r')){
+										content = content.replace(/\r/g, '');
+									}
 								}
 								return content; // 保证链式调用中的下一个then可以接收到文本内容
 								//console.log(content);
